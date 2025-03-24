@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_shared_moments",
+  "info": {
+    "displayName": "moments",
+    "icon": "landscape"
+  },
+  "options": {},
+  "attributes": {
+    "moments": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": true,
+      "required": false
+    }
+  }
+}

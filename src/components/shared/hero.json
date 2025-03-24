@@ -1,0 +1,41 @@
+{
+  "collectionName": "components_shared_heroes",
+  "info": {
+    "displayName": "hero",
+    "icon": "landscape",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "heroImg": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "minLength": 4,
+      "maxLength": 70
+    },
+    "destination": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::destination.destination"
+    },
+    "tour": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::tour.tour"
+    },
+    "description": {
+      "type": "text",
+      "required": true,
+      "maxLength": 120,
+      "minLength": 4
+    }
+  }
+}

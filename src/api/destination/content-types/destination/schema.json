@@ -1,0 +1,82 @@
+{
+  "kind": "collectionType",
+  "collectionName": "destinations",
+  "info": {
+    "singularName": "destination",
+    "pluralName": "destinations",
+    "displayName": "Destination",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "slug": {
+      "type": "string",
+      "required": true,
+      "regex": "^\\S*$",
+      "minLength": 4,
+      "maxLength": 100
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "minLength": 4,
+      "maxLength": 100
+    },
+    "description": {
+      "type": "string",
+      "required": true,
+      "minLength": 10,
+      "maxLength": 100
+    },
+    "highlight": {
+      "displayName": "highlight",
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.highlight",
+      "required": true
+    },
+    "displayImg": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "heroImg": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "experiences": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::experience.experience",
+      "inversedBy": "destinations"
+    },
+    "spotlights": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::spotlight.spotlight",
+      "mappedBy": "destination"
+    },
+    "blogs": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::blog.blog",
+      "mappedBy": "destinations"
+    },
+    "startingPrice": {
+      "type": "biginteger",
+      "required": true,
+      "default": "10000",
+      "min": "1"
+    }
+  }
+}

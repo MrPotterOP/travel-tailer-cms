@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_shared_includeds",
+  "info": {
+    "displayName": "included",
+    "icon": "check"
+  },
+  "options": {},
+  "attributes": {
+    "included": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

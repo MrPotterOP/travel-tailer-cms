@@ -1,0 +1,118 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tours",
+  "info": {
+    "singularName": "tour",
+    "pluralName": "tours",
+    "displayName": "Tour",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 100,
+      "minLength": 4,
+      "regex": "^\\S*$"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100,
+      "minLength": 4
+    },
+    "Place": {
+      "type": "string",
+      "required": true,
+      "maxLength": 35,
+      "minLength": 1
+    },
+    "displayImg": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "feturedPlaces": {
+      "displayName": "featuredPlaces",
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.featured-places",
+      "required": true
+    },
+    "priceTime": {
+      "displayName": "priceTime",
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.price-time",
+      "required": true
+    },
+    "brief": {
+      "type": "string",
+      "required": true,
+      "minLength": 14,
+      "maxLength": 320
+    },
+    "days": {
+      "displayName": "days",
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.days",
+      "required": true
+    },
+    "inclusions": {
+      "displayName": "inclusion",
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.inclusion",
+      "required": true
+    },
+    "moments": {
+      "displayName": "moments",
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.moments"
+    },
+    "description": {
+      "type": "string",
+      "required": true,
+      "minLength": 8,
+      "maxLength": 70
+    },
+    "blogs": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::blog.blog",
+      "mappedBy": "tours"
+    },
+    "experiences": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::experience.experience",
+      "inversedBy": "tours"
+    },
+    "months": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::month.month",
+      "mappedBy": "tours"
+    },
+    "spotlights": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::spotlight.spotlight",
+      "mappedBy": "tour"
+    }
+  }
+}

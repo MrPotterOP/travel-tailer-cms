@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "experiences",
+  "info": {
+    "singularName": "experience",
+    "pluralName": "experiences",
+    "displayName": "Experience",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "minLength": 4,
+      "maxLength": 34
+    },
+    "heroImg": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "highlight": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.highlight",
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "regex": "^\\S*$",
+      "required": true,
+      "minLength": 4
+    },
+    "destinations": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::destination.destination",
+      "mappedBy": "experiences"
+    },
+    "spotlights": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::spotlight.spotlight",
+      "mappedBy": "experiences"
+    },
+    "tours": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tour.tour",
+      "mappedBy": "experiences"
+    },
+    "blogs": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::blog.blog",
+      "mappedBy": "experiences"
+    }
+  }
+}

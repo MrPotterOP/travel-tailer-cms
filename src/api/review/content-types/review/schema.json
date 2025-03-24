@@ -1,0 +1,21 @@
+{
+  "kind": "singleType",
+  "collectionName": "reviews",
+  "info": {
+    "singularName": "review",
+    "pluralName": "reviews",
+    "displayName": "Review"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "review": {
+      "displayName": "review",
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.review",
+      "required": false
+    }
+  }
+}

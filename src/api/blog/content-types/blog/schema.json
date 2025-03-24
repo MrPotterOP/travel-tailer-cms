@@ -1,0 +1,74 @@
+{
+  "kind": "collectionType",
+  "collectionName": "blogs",
+  "info": {
+    "singularName": "blog",
+    "pluralName": "blogs",
+    "displayName": "Blog",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "slug": {
+      "type": "string",
+      "required": false,
+      "minLength": 4,
+      "maxLength": 50,
+      "regex": "^\\S*$"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "minLength": 4,
+      "maxLength": 50
+    },
+    "description": {
+      "type": "text",
+      "required": true,
+      "minLength": 10,
+      "maxLength": 200,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "displayImg": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "body": {
+      "type": "richtext",
+      "required": true
+    },
+    "destinations": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::destination.destination",
+      "inversedBy": "blogs"
+    },
+    "experiences": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::experience.experience",
+      "inversedBy": "blogs"
+    },
+    "tours": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tour.tour",
+      "inversedBy": "blogs"
+    }
+  }
+}

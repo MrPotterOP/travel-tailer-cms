@@ -1,0 +1,19 @@
+{
+  "kind": "singleType",
+  "collectionName": "moments",
+  "info": {
+    "singularName": "moment",
+    "pluralName": "moments",
+    "displayName": "Moment"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "moment": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.moments"
+    }
+  }
+}

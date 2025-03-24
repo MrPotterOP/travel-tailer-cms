@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_shared_featured_places",
+  "info": {
+    "displayName": "featuredPlaces",
+    "icon": "landscape",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "minLength": 2,
+      "maxLength": 140
+    },
+    "img": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

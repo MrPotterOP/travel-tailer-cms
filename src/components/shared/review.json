@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_shared_reviews",
+  "info": {
+    "displayName": "review",
+    "icon": "quote"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "minLength": 3,
+      "maxLength": 60
+    },
+    "review": {
+      "type": "text",
+      "required": true,
+      "minLength": 8,
+      "maxLength": 300
+    },
+    "source": {
+      "type": "enumeration",
+      "enum": [
+        "google",
+        "whatsapp",
+        "instagram",
+        "linkedin"
+      ],
+      "default": "google",
+      "required": true
+    }
+  }
+}

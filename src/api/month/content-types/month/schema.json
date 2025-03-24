@@ -1,0 +1,61 @@
+{
+  "kind": "collectionType",
+  "collectionName": "months",
+  "info": {
+    "singularName": "month",
+    "pluralName": "months",
+    "displayName": "Month",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "month": {
+      "type": "enumeration",
+      "enum": [
+        "january",
+        "february",
+        "march",
+        "april",
+        "may",
+        "june",
+        "july",
+        "august",
+        "september",
+        "october",
+        "november",
+        "december"
+      ],
+      "required": true
+    },
+    "displayImg": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "heroImg": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "highlight": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.highlight",
+      "required": true
+    },
+    "tours": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tour.tour",
+      "inversedBy": "months"
+    }
+  }
+}

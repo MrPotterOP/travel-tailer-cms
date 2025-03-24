@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "spotlights",
+  "info": {
+    "singularName": "spotlight",
+    "pluralName": "spotlights",
+    "displayName": "Spotlight",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "minLength": 4,
+      "maxLength": 50
+    },
+    "displayImg": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "description": {
+      "type": "text",
+      "required": true,
+      "minLength": 10,
+      "maxLength": 200
+    },
+    "tour": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tour.tour",
+      "inversedBy": "spotlights"
+    },
+    "destination": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::destination.destination",
+      "inversedBy": "spotlights"
+    },
+    "experiences": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::experience.experience",
+      "inversedBy": "spotlights"
+    }
+  }
+}

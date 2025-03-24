@@ -1,0 +1,24 @@
+{
+  "kind": "singleType",
+  "collectionName": "heroes",
+  "info": {
+    "singularName": "hero",
+    "pluralName": "heroes",
+    "displayName": "Hero",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "heroSlide": {
+      "displayName": "hero",
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.hero",
+      "required": true,
+      "max": 3,
+      "min": 3
+    }
+  }
+}

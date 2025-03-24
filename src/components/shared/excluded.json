@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_shared_excludeds",
+  "info": {
+    "displayName": "excluded",
+    "icon": "italic"
+  },
+  "options": {},
+  "attributes": {
+    "excluded": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

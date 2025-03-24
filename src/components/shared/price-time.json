@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_shared_price_times",
+  "info": {
+    "displayName": "priceTime",
+    "icon": "pin"
+  },
+  "options": {},
+  "attributes": {
+    "timeline": {
+      "displayName": "timeline",
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.timeline"
+    },
+    "pricePerPerson": {
+      "type": "biginteger",
+      "required": true,
+      "min": "1"
+    },
+    "nights": {
+      "type": "biginteger",
+      "required": true,
+      "min": "1"
+    }
+  }
+}

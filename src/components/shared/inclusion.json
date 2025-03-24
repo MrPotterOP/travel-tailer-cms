@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_shared_inclusions",
+  "info": {
+    "displayName": "inclusion",
+    "icon": "check",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "included": {
+      "displayName": "included",
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.included",
+      "required": true
+    },
+    "excluded": {
+      "displayName": "excluded",
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.excluded",
+      "required": true
+    }
+  }
+}

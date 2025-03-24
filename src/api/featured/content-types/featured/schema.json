@@ -1,0 +1,40 @@
+{
+  "kind": "singleType",
+  "collectionName": "featureds",
+  "info": {
+    "singularName": "featured",
+    "pluralName": "featureds",
+    "displayName": "Featured",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "blogs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::blog.blog"
+    },
+    "destinations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::destination.destination"
+    },
+    "experiences": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::experience.experience"
+    },
+    "tours": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tour.tour"
+    },
+    "spotlights": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::spotlight.spotlight"
+    }
+  }
+}
