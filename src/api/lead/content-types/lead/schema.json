@@ -1,0 +1,73 @@
+{
+  "kind": "collectionType",
+  "collectionName": "leads",
+  "info": {
+    "singularName": "lead",
+    "pluralName": "leads",
+    "displayName": "Lead",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 200,
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "minLength": 3,
+      "maxLength": 200
+    },
+    "contact": {
+      "type": "biginteger",
+      "required": true,
+      "min": "100000",
+      "max": "9999999999999"
+    },
+    "countryCode": {
+      "type": "string",
+      "required": true,
+      "minLength": 1,
+      "maxLength": 6
+    },
+    "month": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "year": {
+      "type": "biginteger",
+      "min": "2020",
+      "max": "3030"
+    },
+    "duration": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 120
+    },
+    "people": {
+      "type": "biginteger",
+      "required": true,
+      "min": "1",
+      "max": "500"
+    },
+    "budget": {
+      "type": "biginteger",
+      "min": "1",
+      "max": "9999999999"
+    },
+    "comment": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 999
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

@@ -386,6 +386,8 @@ export interface ApiBlogBlog extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
+    blog: Schema.Attribute.Relation<'manyToOne', 'api::blog.blog'>;
+    blogs: Schema.Attribute.Relation<'oneToMany', 'api::blog.blog'>;
     body: Schema.Attribute.RichText & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -412,6 +414,7 @@ export interface ApiBlogBlog extends Struct.CollectionTypeSchema {
     >;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::blog.blog'>;
+    months: Schema.Attribute.Relation<'manyToMany', 'api::month.month'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
@@ -467,6 +470,7 @@ export interface ApiDestinationDestination extends Struct.CollectionTypeSchema {
       'api::destination.destination'
     > &
       Schema.Attribute.Private;
+    months: Schema.Attribute.Relation<'manyToMany', 'api::month.month'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -493,6 +497,7 @@ export interface ApiDestinationDestination extends Struct.CollectionTypeSchema {
         maxLength: 100;
         minLength: 4;
       }>;
+    tours: Schema.Attribute.Relation<'manyToMany', 'api::tour.tour'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -528,6 +533,7 @@ export interface ApiExperienceExperience extends Struct.CollectionTypeSchema {
       'api::experience.experience'
     > &
       Schema.Attribute.Private;
+    months: Schema.Attribute.Relation<'manyToMany', 'api::month.month'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -659,6 +665,188 @@ export interface ApiHeroHero extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiLeadLead extends Struct.CollectionTypeSchema {
+  collectionName: 'leads';
+  info: {
+    description: '';
+    displayName: 'Lead';
+    pluralName: 'leads';
+    singularName: 'lead';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    budget: Schema.Attribute.BigInteger &
+      Schema.Attribute.SetMinMax<
+        {
+          max: '9999999999';
+          min: '1';
+        },
+        string
+      >;
+    comment: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 999;
+        minLength: 1;
+      }>;
+    contact: Schema.Attribute.BigInteger &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          max: '9999999999999';
+          min: '100000';
+        },
+        string
+      >;
+    countryCode: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 6;
+        minLength: 1;
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    duration: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
+        minLength: 2;
+      }>;
+    email: Schema.Attribute.Email &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 200;
+        minLength: 3;
+      }>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::lead.lead'> &
+      Schema.Attribute.Private;
+    month: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+        minLength: 1;
+      }>;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 200;
+        minLength: 2;
+      }>;
+    people: Schema.Attribute.BigInteger &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          max: '500';
+          min: '1';
+        },
+        string
+      >;
+    publishedAt: Schema.Attribute.DateTime;
+    source: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 1;
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    year: Schema.Attribute.BigInteger &
+      Schema.Attribute.SetMinMax<
+        {
+          max: '3030';
+          min: '2020';
+        },
+        string
+      >;
+  };
+}
+
+export interface ApiListDestinationListDestination
+  extends Struct.SingleTypeSchema {
+  collectionName: 'list_destinations';
+  info: {
+    displayName: 'List Destination';
+    pluralName: 'list-destinations';
+    singularName: 'list-destination';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    group: Schema.Attribute.Component<'shared.group', true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::list-destination.list-destination'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiListExperienceListExperience
+  extends Struct.SingleTypeSchema {
+  collectionName: 'list_experiences';
+  info: {
+    displayName: 'List Experience';
+    pluralName: 'list-experiences';
+    singularName: 'list-experience';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    group: Schema.Attribute.Component<'exp.group', true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::list-experience.list-experience'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiListTourListTour extends Struct.SingleTypeSchema {
+  collectionName: 'list_tours';
+  info: {
+    displayName: 'List Tour';
+    pluralName: 'list-tours';
+    singularName: 'list-tour';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    group: Schema.Attribute.Component<'tour.group', true> &
+      Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::list-tour.list-tour'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiMomentMoment extends Struct.SingleTypeSchema {
   collectionName: 'moments';
   info: {
@@ -699,10 +887,19 @@ export interface ApiMonthMonth extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    blogs: Schema.Attribute.Relation<'manyToMany', 'api::blog.blog'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    destinations: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::destination.destination'
+    >;
     displayImg: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    experiences: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::experience.experience'
+    >;
     heroImg: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     highlight: Schema.Attribute.Component<'shared.highlight', false> &
       Schema.Attribute.Required;
@@ -847,6 +1044,10 @@ export interface ApiTourTour extends Struct.CollectionTypeSchema {
         maxLength: 70;
         minLength: 8;
       }>;
+    destinations: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::destination.destination'
+    >;
     displayImg: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     experiences: Schema.Attribute.Relation<
       'manyToMany',
@@ -860,7 +1061,7 @@ export interface ApiTourTour extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::tour.tour'>;
     moments: Schema.Attribute.Component<'shared.moments', false>;
     months: Schema.Attribute.Relation<'manyToMany', 'api::month.month'>;
-    Place: Schema.Attribute.String &
+    place: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 35;
@@ -886,6 +1087,7 @@ export interface ApiTourTour extends Struct.CollectionTypeSchema {
         maxLength: 100;
         minLength: 4;
       }>;
+    tours: Schema.Attribute.Relation<'oneToMany', 'api::tour.tour'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1407,6 +1609,10 @@ declare module '@strapi/strapi' {
       'api::featured.featured': ApiFeaturedFeatured;
       'api::global.global': ApiGlobalGlobal;
       'api::hero.hero': ApiHeroHero;
+      'api::lead.lead': ApiLeadLead;
+      'api::list-destination.list-destination': ApiListDestinationListDestination;
+      'api::list-experience.list-experience': ApiListExperienceListExperience;
+      'api::list-tour.list-tour': ApiListTourListTour;
       'api::moment.moment': ApiMomentMoment;
       'api::month.month': ApiMonthMonth;
       'api::review.review': ApiReviewReview;

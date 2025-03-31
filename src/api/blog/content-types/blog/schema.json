@@ -69,6 +69,24 @@
       "relation": "manyToMany",
       "target": "api::tour.tour",
       "inversedBy": "blogs"
+    },
+    "months": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::month.month",
+      "mappedBy": "blogs"
+    },
+    "blogs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::blog.blog",
+      "mappedBy": "blog"
+    },
+    "blog": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::blog.blog",
+      "inversedBy": "blogs"
     }
   }
 }

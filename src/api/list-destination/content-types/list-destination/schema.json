@@ -1,0 +1,19 @@
+{
+  "kind": "singleType",
+  "collectionName": "list_destinations",
+  "info": {
+    "singularName": "list-destination",
+    "pluralName": "list-destinations",
+    "displayName": "List Destination"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "group": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.group"
+    }
+  }
+}

@@ -30,7 +30,7 @@
       "maxLength": 100,
       "minLength": 4
     },
-    "Place": {
+    "place": {
       "type": "string",
       "required": true,
       "maxLength": 35,
@@ -113,6 +113,17 @@
       "relation": "oneToMany",
       "target": "api::spotlight.spotlight",
       "mappedBy": "tour"
+    },
+    "tours": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tour.tour"
+    },
+    "destinations": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::destination.destination",
+      "mappedBy": "tours"
     }
   }
 }

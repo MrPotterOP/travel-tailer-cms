@@ -1,0 +1,21 @@
+{
+  "kind": "singleType",
+  "collectionName": "list_tours",
+  "info": {
+    "singularName": "list-tour",
+    "pluralName": "list-tours",
+    "displayName": "List Tour"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "group": {
+      "displayName": "group",
+      "type": "component",
+      "repeatable": true,
+      "component": "tour.group",
+      "required": true
+    }
+  }
+}

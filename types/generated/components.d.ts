@@ -1,8 +1,30 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface ExpGroup extends Struct.ComponentSchema {
+  collectionName: 'components_exp_groups';
+  info: {
+    displayName: 'group';
+    icon: 'filter';
+  };
+  attributes: {
+    experiences: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::experience.experience'
+    >;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 140;
+        minLength: 2;
+      }>;
+  };
+}
+
 export interface SharedDays extends Struct.ComponentSchema {
   collectionName: 'components_shared_days';
   info: {
+    description: '';
     displayName: 'days';
     icon: 'filter';
   };
@@ -13,7 +35,7 @@ export interface SharedDays extends Struct.ComponentSchema {
         maxLength: 220;
         minLength: 16;
       }>;
-    representiveImg: Schema.Attribute.Media<'images', true> &
+    representiveImg: Schema.Attribute.Media<'images'> &
       Schema.Attribute.Required;
   };
 }
@@ -42,6 +64,28 @@ export interface SharedFeaturedPlaces extends Struct.ComponentSchema {
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 140;
+        minLength: 2;
+      }>;
+  };
+}
+
+export interface SharedGroup extends Struct.ComponentSchema {
+  collectionName: 'components_shared_groups';
+  info: {
+    description: '';
+    displayName: 'group';
+    icon: 'filter';
+  };
+  attributes: {
+    destinations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::destination.destination'
+    >;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 120;
         minLength: 2;
       }>;
   };
@@ -269,12 +313,30 @@ export interface SharedTimeline extends Struct.ComponentSchema {
   };
 }
 
+export interface TourGroup extends Struct.ComponentSchema {
+  collectionName: 'components_tour_groups';
+  info: {
+    displayName: 'group';
+    icon: 'filter';
+  };
+  attributes: {
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 2;
+      }>;
+    tours: Schema.Attribute.Relation<'oneToMany', 'api::tour.tour'>;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'exp.group': ExpGroup;
       'shared.days': SharedDays;
       'shared.excluded': SharedExcluded;
       'shared.featured-places': SharedFeaturedPlaces;
+      'shared.group': SharedGroup;
       'shared.hero': SharedHero;
       'shared.highlight': SharedHighlight;
       'shared.included': SharedIncluded;
@@ -288,6 +350,7 @@ declare module '@strapi/strapi' {
       'shared.seo': SharedSeo;
       'shared.slider': SharedSlider;
       'shared.timeline': SharedTimeline;
+      'tour.group': TourGroup;
     }
   }
 }

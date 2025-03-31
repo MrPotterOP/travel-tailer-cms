@@ -1,190 +1,14 @@
-// module.exports = {
-//     async getHero() {
-//         const hero =  await strapi.db.query('api::hero.hero').findOne({
-//             populate: {
-//                 heroSlide: {
-//                     populate: true
-//                 }
-//             }
-//         });
 
+const { transformEntities } = require('../../../../libs/transformCards.js');
+const { transformTour } = require('../../../../libs/transformTour.js');
+const { transformDestination } = require('../../../../libs/transformDestination.js');
+const { transformMonth } = require('../../../../libs/transformMonth.js');
+const { destination } = require('../controllers/apihome.js');
+const { transformExperience } = require('../../../../libs/transformExperience.js');
+const { transformDestinationList, transformExperienceList, transformTourList } = require('../../../../libs/transformLists.js');
+const { serchCardBlog, serchCardDestination, serchCardExperience, serchCardTour } = require('../../../../libs/transformSearch.js');
 
-//         const cleandData = hero.heroSlide.map(item => {
-
-//             // if item.destination is thare then url is /destinations/slug
-//             // else if item.tour is there then url is /tours/slug
-            
-//             let url = null;
-//             if (item.destination) {
-//                 url = `/destinations/${item.destination.slug}`;
-//             } else if (item.tour) {
-//                 url = `/tours/${item.tour.slug}`;
-//             }
-
-//             return {
-//                 title: item.title,
-//                 description: item.description,
-//                 heroImgUrl: item.heroImg?.url || null,
-//                 url: url
-//             }
-//         });
-
-//         return cleandData;
-//     },
-
-
-//     async getFetured() {
-//         const featuredData = await strapi.db.query('api::featured.featured').findOne({
-//             populate: {
-//                 blogs: {
-//                     populate: {
-//                         displayImg: {
-//                             fields: ['url']
-//                         }
-//                     },
-//                     fields: ['id', 'slug', 'title', 'description', 'body', 'createdAt', 'updatedAt', 'publishedAt', 'locale', 'documentId']
-//                 },
-//                 destinations: {
-//                     populate: {
-//                         displayImg: {
-//                             fields: ['url']
-//                         }
-//                     },
-//                     fields: ['id', 'slug', 'title', 'description', 'createdAt', 'updatedAt', 'publishedAt', 'locale', 'documentId']
-//                 },
-//                 experiences: {
-//                     populate: {
-//                         heroImg: {
-//                             fields: ['url']
-//                         }
-//                     },
-//                     fields: ['id', 'slug', 'title', 'createdAt', 'updatedAt', 'publishedAt', 'locale', 'documentId']
-//                 },
-//                 tours: {
-//                     populate: {
-//                         displayImg: {
-//                             fields: ['url']
-//                         },
-//                         priceTime: {
-//                             fields: ['nights']
-//                         }
-//                     },
-//                     fields: ['id', 'slug', 'title', 'description']
-//                 },
-//             },
-//             fields: ['id',],
-//         });
-
-//         if (!featuredData) {
-//             return null;
-//         }
-
-//         const cleanedBlogs = featuredData.blogs.map(blog => ({
-//             ...blog,
-//             displayImgUrl: blog.displayImg?.url || null,
-//             displayImg: undefined
-//         }));
-
-//         const cleanedDestinations = featuredData.destinations.map(destination => ({
-//             ...destination,
-//             displayImgUrl: destination.displayImg?.url || null,
-//             displayImg: undefined
-//         }));
-
-//         const cleanedExperiences = featuredData.experiences.map(experience => ({
-//             ...experience,
-//             displayImgUrl: experience.heroImg?.url || null,
-//             heroImg: undefined
-//         }));
-
-//         const cleanedTours = featuredData.tours.map(tour => ({
-//             ...tour,
-//             displayImgUrl: tour.displayImg?.url || null,
-//             displayImg: undefined
-//         }));
-
-//         return {
-//             blogs: cleanedBlogs,
-//             destinations: cleanedDestinations,
-//             experiences: cleanedExperiences,
-//             tours: cleanedTours,
-//         };
-//     },
-
-//     async getMonths() {
-
-//         const months = await strapi.db.query('api::month.month').findMany({
-//             status: 'published',
-//             fields: ['id', 'month', 'documentId', 'displayImg'],
-//             populate: {
-//                 displayImg: {
-//                     fields: ['url']
-//                 }
-//             },
-//         });
-
-//         const uniqueMonths = [];
-//         const seenMonths = new Set();
-
-//         for (const monthEntry of months) {
-//             if (!seenMonths.has(monthEntry.month)) {
-//                 uniqueMonths.push({
-//                     ...monthEntry,
-//                     displayImgUrl: monthEntry.displayImg?.url || null,
-//                     displayImg: undefined
-//                 });
-//                 seenMonths.add(monthEntry.month);
-//             }
-//         }
-
-//         const monthOrder = [
-//             "january", "february", "march", "april", "may", "june",
-//             "july", "august", "september", "october", "november", "december"
-//         ];
-
-//         const sortedUniqueMonths = uniqueMonths.sort((a, b) => {
-//             const indexA = monthOrder.indexOf(a.month);
-//             const indexB = monthOrder.indexOf(b.month);
-//             return indexA - indexB;
-//         });
-
-//         return sortedUniqueMonths;
-
-//     },
-
-//     async getReviews() {
-
-//         const reviewsData = await strapi.db.query('api::review.review').findMany({
-//             status: 'published',
-//             populate: true,
-//         });
-
-//         const uniqueReviews = [];
-//         const seenDocumentIds = new Set();
-
-//         for (const reviewEntry of reviewsData) {
-//             if (!seenDocumentIds.has(reviewEntry.documentId)) {
-//                 const {
-//                     id,
-//                     documentId,
-//                     review,
-//                 } = reviewEntry;
-
-//                 uniqueReviews.push({
-//                     id,
-//                     documentId,
-//                     review,
-//                 });
-//                 seenDocumentIds.add(documentId);
-//             }
-//         }
-
-//         return [...uniqueReviews[0].review];
-
-//     },
-
-// };
-
+const DEFAULT_IMAGE = '/uploads/failed_bc13306774.png';
 
 module.exports = {
     async getHero() {
@@ -204,26 +28,474 @@ module.exports = {
         const result = allSlides.map(slide => ({
             title: slide.title,
             description: slide.description,
-            heroImgUrl: slide.heroImg?.url || null
+            imgUrl: slide.heroImg?.url || DEFAULT_IMAGE
         }));
 
         return result;
     },
 
     async getFeatured() {
-        // Fetch the Featured document with relations and their images populated
-        const featured = await strapi.documents("api::featured.featured").findOne({
+
+        const featured = await strapi.documents("api::featured.featured").findMany({
+            populate: {
+                blogs: {
+                    populate: "*"
+                },
+                destinations: {
+                    populate: "*"
+                },
+                experiences: {
+                    populate: "*"
+                },
+                tours: {
+                    populate: "*"
+                },
+                spotlights: {
+                    populate: "*"
+                }
+            },
+        });
+    
+        if (!featured) {
+            throw new Error("Featured document not found.");
+        }
+    
+        const response = {
+            blogs: transformEntities(featured[0].blogs, 'blogs'),
+            destinations: transformEntities(featured[0].destinations, 'destinations'),
+            experiences: transformEntities(featured[0].experiences, 'experiences'),
+            tours: transformEntities(featured[0].tours, 'tours'),
+            spotlights: transformEntities(featured[0].spotlights, 'spotlights')
+        };
+
+        return response;
+    },
+
+    async getMonths() {
+        const months = await strapi.documents("api::month.month").findMany({
             populate: "*",
         });
 
-        console.log(featured);
-        
+        const response = {
+            months: transformEntities(months, 'months')
+        };
 
-        return featured;
+        // sort months like january, february, march ans so on
+        response.months.sort((a, b) => {
+            const monthOrder = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+            return monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month);
+        });
 
-       
+        return response;
     },
 
+    async getReviews() {
+        const reviews = await strapi.documents("api::review.review").findMany({
+            populate: "*",
+        });
+
+        const response = {
+            reviews: transformEntities(reviews[0].review, 'reviews')
+        };
+
+        console.log(reviews);
+        
+
+        return response;
+    },
+
+    //Tours API
+    async getTour(slug) {
+        
+        const tour = await strapi.documents("api::tour.tour").findFirst({
+            populate: {
+            displayImg: {
+                populate: "*"
+            },
+            feturedPlaces: {
+                populate: "*"
+            },
+            priceTime: {
+                populate: "*"
+            },
+            days: {
+                populate: "*"
+            },
+            inclusions: {
+                populate: "*"
+            },
+            moments: {
+                populate: "*"
+            },
+            blogs: {
+                populate: "*"
+            },
+            experiences: {
+                populate: "*"
+            },
+            months: {
+                populate: "*"
+            },
+            spotlights: {
+                populate: "*"
+            },
+            tours: {
+                populate: "*"
+            },
+         },
+
+            filters: {
+                slug: slug
+            }
+        });
+
+        if (!tour) {
+            throw new Error("Tour not found.");
+        }
+
+        
+        return {
+            ...transformTour(tour),
+            blogs: transformEntities(tour.blogs, 'blogs'),
+            tours: transformEntities(tour.tours, 'tours'),
+        };
+    },
+
+    //Destinations API
+    async getDestination(slug) {
+        const destination = await strapi.documents("api::destination.destination").findFirst({
+            
+            populate: {
+
+                highlight: {
+                    populate: "*"
+                },
+                heroImg: {
+                    populate: "*"
+                },
+                experiences: {
+                    populate: "*"
+                },
+                spotlights: {
+                    populate: "*"
+                },
+                blogs: {
+                    populate: "*"
+                },
+                tours: {
+                    populate: "*"
+                },
+                displayImg: {
+                    fields: ["url"]
+                }
+
+            },
+
+            filters: {
+                slug: slug
+            },
+        });
+
+        if (!destination) {
+            throw new Error("Destination not found.");
+        }
+
+        return {
+            ...transformDestination(destination),
+            tours: transformEntities(destination.tours, 'tours'),
+            spotlights: transformEntities(destination.spotlights, 'spotlights'),
+            blogs: transformEntities(destination.blogs, 'blogs'),
+            experiences: transformEntities(destination.experiences, 'experiences')
+        };
+    },
+
+    //Month API
+    async getMonth(month) {
+        
+        const monthDoc = await strapi.documents("api::month.month").findFirst({
+            populate: {
+                heroImg: {
+                    populate: "*"
+                },
+                experiences: {
+                    populate: "*"
+                },
+                blogs: {
+                    populate: "*"
+                },
+                tours: {
+                    populate: "*"
+                },
+                highlight: {
+                    populate: "*"
+                },
+                destinations: {
+                    populate: "*"
+                },
+            },
+            filters: {
+                month: month
+            }
+        });
+
+        if (!monthDoc) {
+            throw new Error("Month not found.");
+        }
+
+        return {
+            ...transformMonth(monthDoc),
+            tours: transformEntities(monthDoc.tours, 'tours'),
+            experiences: transformEntities(monthDoc.experiences, 'experiences'),
+            blogs: transformEntities(monthDoc.blogs, 'blogs'),
+            destinations: transformEntities(monthDoc.destinations, 'destinations')
+        };
+    },
+
+    //Experience API
+    async getExperience(slug) {
+        const experienceDoc = await strapi.documents("api::experience.experience").findFirst({
+            populate: {
+                heroImg: {
+                    populate: "*"
+                },
+                blogs: {
+                    populate: "*"
+                },
+                destinations: {
+                    populate: "*"
+                },
+                spotlights: {
+                    populate: "*"
+                },
+                highlight: {
+                    populate: "*"
+                },
+            },
+            filters: {
+                slug: slug
+            }
+        });
+        if (!experienceDoc){
+            throw new Error("Experience not found.");
+        }
+        return {
+            ...transformExperience(experienceDoc),
+            destinations: transformEntities(experienceDoc.destinations, 'destinations'),
+            spotlights: transformEntities(experienceDoc.spotlights, 'spotlights'),
+            blogs: transformEntities(experienceDoc.blogs, 'blogs'),
+        }
+    },
+
+    async getSlugs(type) {
+        const allowedTypes = ['destination', 'tour', 'experience', 'month', 'blog'];
+        if (!allowedTypes.includes(type)) {
+            throw new Error(`Invalid type provided: "${type}"`);
+        }
+    
+        let docs; 
+        const fieldToFetch = type === 'month' ? 'month' : 'slug'; // Determine the field name
+    
+        try {
+            // Single API call using the determined field
+            docs = await strapi.documents(`api::${type}.${type}`).findMany({
+                fields: [fieldToFetch], 
+            });
+    
+
+            if (!docs) {
+               console.warn(`No documents found for type: ${type}`);
+               return []; // Return empty array if nothing found
+            }
+    
+
+            const slugs = docs.map((doc) => ({
+                slug: doc[fieldToFetch],
+            }));
+    
+            return slugs;
+    
+        } catch (error) { 
+            console.error(`Failed to load slugs for type: ${type}. Original error:`, error); // Log original error
+            // Re-throw a more informative error or handle it as needed
+            throw new Error(`Failed to load slugs for type "${type}". Reason: ${error.message}`);
+        }
+    },
+
+    async getListDestination() {
+        const listDestination = await strapi.documents("api::list-destination.list-destination").findMany({
+            populate: {
+                group: {
+                    populate: {
+                        destinations: {
+                            fields: ["title", "slug"], 
+                            populate: {
+                                displayImg: {
+                                    fields: ["url"]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+        });
+
+        if (!listDestination) {
+            throw new Error("List destination not found.");
+        }
+
+        return {
+            list: transformDestinationList(listDestination)
+        };
+    },
+
+    async getListExperience() {
+        const listExperience = await strapi.documents("api::list-experience.list-experience").findMany({
+            populate: {
+                group: {
+                    populate: {
+                        experiences: {
+                            fields: ["title", "slug"], 
+                            populate: {
+                                heroImg: {
+                                    fields: ["url"]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+        });
+
+        if (!listExperience) {
+            throw new Error("List experience not found.");
+        }
+
+        return {
+            list: transformExperienceList(listExperience)
+        };
+    },
+
+    async getListTour() {
+        const listTour = await strapi.documents("api::list-tour.list-tour").findMany({
+            populate: {
+                group: {
+                    populate: {
+                        tours: {
+                            fields: ["title", "slug"], 
+                            populate: {
+                                displayImg: {
+                                    fields: ["url"]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+        });
+
+        if (!listTour) {
+            throw new Error("List tour not found.");
+        }
+        return {
+            list: transformTourList(listTour)
+        };
+    },
+
+
+    async getSearch(query) {
+
+        // regex to validate query
+        const queryRegex = /^[a-zA-Z0-9\s]+$/;
+        if (!query || typeof query !== 'string' || !queryRegex.test(query)) {
+            ctx.throw(400, "Search query is required and must be a string.");
+        }
+
+        const searchFilter = { title: { $containsi: query } };
+
+        try {
+            const rawBlogs = await strapi.documents("api::blog.blog").findMany({
+                filters: searchFilter,
+                fields: ["title", "slug"],
+                populate: { displayImg: {
+                    fields: ["url"]
+                } },
+                limit: 8
+            });
+
+            const rawDestinations = await strapi.documents("api::destination.destination").findMany({
+                filters: searchFilter,
+                fields: ["title", "slug"],
+                populate: { displayImg: {
+                    fields: ["url"]
+                } },
+                limit: 8
+            });
+
+            const rawExperiences = await strapi.documents("api::experience.experience").findMany({
+                filters: searchFilter,
+                fields: ["title", "slug"],
+                populate: { heroImg: {
+                    fields: ["url"]
+                } },
+                limit: 8
+            });
+
+            const rawTours = await strapi.documents("api::tour.tour").findMany({
+                filters: searchFilter,
+                fields: ["title", "slug"],
+                populate: { displayImg: {
+                    fields: ["url"]
+                } },
+                limit: 8
+            });
+
+            const response = {
+                blogs: transformEntities(rawBlogs, 'blogs'),
+                destinations: transformEntities(rawDestinations, 'destinations'),
+                experiences: transformEntities(rawExperiences, 'experiences'),
+                tours: transformEntities(rawTours, 'tours'),
+            };
+
+            return response;
+        } catch (error) {
+            ctx.throw(500, "Failed to load search.");
+        }
+    },
+
+    async createLead(name, email, contact, countryCode, month, year, duration, people, budget, comment, source) {
+
+        try {
+            // Create the lead entry in the database
+            const lead = await strapi.documents("api::lead.lead").create({
+                data: {
+                    name,
+                    email,
+                    contact,
+                    countryCode,
+                    month,
+                    year,
+                    duration,
+                    people,
+                    budget,
+                    comment,
+                    source,
+                    publishedAt: new Date(),
+                }
+            });
+
+            // Return the created lead (or just a success message if preferred)
+            response = {
+                message: "Lead created successfully",
+                id: lead.id,
+                documentId: lead.documentId
+            };
+
+            return response;
+        } catch (error) {
+            throw(error.status || 500, error.message);
+        }
+
+    }
 
 
 }

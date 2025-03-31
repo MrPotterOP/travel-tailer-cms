@@ -60,6 +60,12 @@
       "relation": "manyToMany",
       "target": "api::blog.blog",
       "mappedBy": "experiences"
+    },
+    "months": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::month.month",
+      "mappedBy": "experiences"
     }
   }
 }

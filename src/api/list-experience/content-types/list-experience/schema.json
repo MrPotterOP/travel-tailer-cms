@@ -1,0 +1,20 @@
+{
+  "kind": "singleType",
+  "collectionName": "list_experiences",
+  "info": {
+    "singularName": "list-experience",
+    "pluralName": "list-experiences",
+    "displayName": "List Experience"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "group": {
+      "displayName": "group",
+      "type": "component",
+      "repeatable": true,
+      "component": "exp.group"
+    }
+  }
+}

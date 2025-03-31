@@ -77,6 +77,18 @@
       "required": true,
       "default": "10000",
       "min": "1"
+    },
+    "tours": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tour.tour",
+      "inversedBy": "destinations"
+    },
+    "months": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::month.month",
+      "mappedBy": "destinations"
     }
   }
 }

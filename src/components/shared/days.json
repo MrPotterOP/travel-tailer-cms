@@ -2,7 +2,8 @@
   "collectionName": "components_shared_days",
   "info": {
     "displayName": "days",
-    "icon": "filter"
+    "icon": "filter",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -13,12 +14,12 @@
       "maxLength": 220
     },
     "representiveImg": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": true,
-      "required": true
+      ]
     }
   }
 }
