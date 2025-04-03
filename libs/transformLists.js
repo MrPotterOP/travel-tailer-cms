@@ -47,6 +47,21 @@ const transformTourList = (listTour) => {
             }))
         }))
     );
+};
+
+const transformMonthList = (months) => {
+    if (!months || !Array.isArray(months)) return [];
+
+    const rawMonths = months.map(month => ({
+        month: month.month,
+        imgUrl: month.displayImg?.url || DEFAULT_IMAGE
+    }));
+
+    // Sort months like january, february, march ans so on
+    return rawMonths.sort((a, b) => {
+        const monthOrder = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        return monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month);
+    });
 }
 
 
@@ -55,5 +70,6 @@ const transformTourList = (listTour) => {
 module.exports = {
     transformDestinationList,
     transformExperienceList,
-    transformTourList
+    transformTourList,
+    transformMonthList
 }

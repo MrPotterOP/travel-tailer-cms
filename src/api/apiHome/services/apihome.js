@@ -1,12 +1,12 @@
-
 const { transformEntities } = require('../../../../libs/transformCards.js');
 const { transformTour } = require('../../../../libs/transformTour.js');
 const { transformDestination } = require('../../../../libs/transformDestination.js');
 const { transformMonth } = require('../../../../libs/transformMonth.js');
 const { destination } = require('../controllers/apihome.js');
 const { transformExperience } = require('../../../../libs/transformExperience.js');
-const { transformDestinationList, transformExperienceList, transformTourList } = require('../../../../libs/transformLists.js');
+const { transformDestinationList, transformExperienceList, transformTourList, transformMonthList } = require('../../../../libs/transformLists.js');
 const { serchCardBlog, serchCardDestination, serchCardExperience, serchCardTour } = require('../../../../libs/transformSearch.js');
+const { transformBlog } = require('../../../../libs/transformBlog.js');
 
 const DEFAULT_IMAGE = '/uploads/failed_bc13306774.png';
 
@@ -401,6 +401,26 @@ module.exports = {
         };
     },
 
+    async getListMonths() {
+        const listMonths = await strapi.documents('api::month.month').findMany({
+            limit: 12,
+            populate: {
+                displayImg: {
+                    fields: ["url"]
+                },
+                fields: ["month"]
+            },
+            status: 'published'
+        });
+        
+        if (!listMonths) {
+            throw new Error("List months not found.");
+        }
+        return {
+            list: transformMonthList(listMonths)
+        };
+    },
+
 
     async getSearch(query) {
 
@@ -490,12 +510,173 @@ module.exports = {
                 documentId: lead.documentId
             };
 
+            // --- Build the HTML Content Dynamically ---
+
+            // Helper function to format contact number nicely
+            const formatContact = (code, number) => {
+                if (!number) return ''; // If no number, return empty string
+                return `${code ? code + ' ' : ''}${number}`; // Add code if it exists
+            }
+            
+            // Helper function to format date nicely
+            const formatTravelDate = (m, y) => {
+                if (!m && !y) return '';
+                let parts = [];
+                if (m) parts.push(m);
+                if (y) parts.push(y);
+                return parts.join(' / ');
+            }
+            
+            const htmlContent = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>New Website Submission</title>
+                <style>
+                                /* Basic Reset & Body Styling */
+                body { margin: 0; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333333; background-color: #f4f7f6; }
+                /* Container */
+                .container { width: 100%; max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e0e0e0;}
+                /* Header */
+                .header { background-color: #D35400; /* Rich Orange */ color: #ffffff; padding: 25px; text-align: center; }
+                .header h1 { margin: 0; font-size: 24px; font-weight: 500; }
+                /* Content Area */
+                .content { padding: 30px; }
+                .content h2 { font-size: 20px; color: #D35400; margin-top: 0; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;}
+                /* Data Table */
+                .data-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
+                .data-table th, .data-table td { text-align: left; padding: 12px 0; border-bottom: 1px solid #eeeeee; vertical-align: top; }
+                .data-table th { color: #555555; font-weight: 600; width: 120px; /* Fixed width for labels */ }
+                .data-table td { color: #333333; }
+                /* Comment Section */
+                .comment-section { margin-top: 20px; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #D35400; border-radius: 4px; }
+                .comment-label { font-weight: 600; color: #D35400; margin-bottom: 8px; display: block; font-size: 16px;}
+                .comment-text { margin: 0; color: #555; white-space: pre-wrap; /* Preserve line breaks */ word-wrap: break-word;}
+                /* Footer */
+                .footer { text-align: center; padding: 20px; font-size: 12px; color: #999999; background-color: #f4f7f6;}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <h1>New Website Enquiry</h1>
+                    </div>
+                    <div class="content">
+                        <h2>Submitter Details</h2>
+                        <table class="data-table">
+                            ${name ? `<tr><th>Name</th><td>${name}</td></tr>` : ''}
+                            ${email ? `<tr><th>Email</th><td><a href="mailto:${email}" style="color: #4A90E2; text-decoration: none;">${email}</a></td></tr>` : ''}
+                            ${contact ? `<tr><th>Contact</th><td>${formatContact(countryCode, contact)}</td></tr>` : ''}
+                        </table>
+            
+                        ${month || year || duration || people || budget ? `<h2>Request Details</h2>` : ''}
+                        <table class="data-table">
+                            ${month || year ? `<tr><th>Travel Time</th><td>${formatTravelDate(month, year)}</td></tr>` : ''}
+                            ${duration ? `<tr><th>Duration</th><td>${duration}</td></tr>` : ''}
+                            ${people ? `<tr><th>People</th><td>${people}</td></tr>` : ''}
+                            ${budget ? `<tr><th>Budget</th><td>${budget}</td></tr>` : ''}
+                            ${source ? `<tr><th>Source</th><td>${source}</td></tr>` : ''}
+                        </table>
+            
+                        ${comment ? `
+                        <div class="comment-section">
+                            <span class="comment-label">Message/Details:</span>
+                            <p class="comment-text">${comment}</p>
+                        </div>
+                        ` : ''}
+                    </div>
+                    <div class="footer">
+                        This is an automated notification from your website.
+                    </div>
+                </div>
+            </body>
+            </html>
+            `;
+            
+
+            const sendEmail = await fetch(`${process.env.MAIL_API_URL}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'api-key': process.env.MAIL_API_KEY,
+                    'accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    "sender":{  
+                        "name":"Sender AlexS",
+                        "email": process.env.MAIL_SENDER
+                    },
+                    "to":[  
+                        {  
+                            "email":"shubham.ubarhande69@gmail.com",
+                            "name":"John Doe"
+                        }
+                    ],
+                    "subject":"Website Contact Form | New Enquiry | " + name,
+                    "htmlContent": htmlContent
+                })
+            });
+
+            if (!sendEmail.ok) {
+                console.log(sendEmail);
+                throw new Error("Failed to send email");
+            }
+
             return response;
         } catch (error) {
             throw(error.status || 500, error.message);
         }
 
-    }
+    },
+
+    async getBlog(slug) {
+        const blog = await strapi.documents("api::blog.blog").findFirst({
+            filters: { slug },
+            populate: {
+                displayImg: {
+                    fields: ["url"]
+                }, 
+                seo: {
+                    populate: {
+                        shareImage: {
+                            fields: ["url"]
+                        }
+                    },
+                    fields: ["metaTitle", "metaDescription"]
+                },
+                blogs: {
+                    populate: {
+                        displayImg: {
+                            fields: ["url"]
+                        }
+                    },
+                    fields: ["title", "description", "slug"]
+                },
+                tours: {
+                    populate: {
+                        displayImg: {
+                            fields: ["url"]
+                        },
+                        priceTime: "*",
+                    },
+                    fields: ["title", "description", "slug"]
+                },
+                createdBy: {
+                    fields: ["firstname", "lastname", "createdAt", "updatedAt"]
+                }
+            }
+        });
+        if (!blog) {
+            throw new Error("Blog not found.");
+        }
+        return {
+            ...transformBlog(blog),
+            blogs: transformEntities(blog.blogs, 'blogs'),
+            tours: transformEntities(blog.tours, 'tours')
+        };
+    },
 
 
 }

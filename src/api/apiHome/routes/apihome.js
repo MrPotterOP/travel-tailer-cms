@@ -27,6 +27,11 @@ module.exports = {
         },
         {
             method: 'GET',
+            path: '/apiHome/blog/:slug',
+            handler: 'apihome.blog'
+        },
+        {
+            method: 'GET',
             path: '/apiHome/slugs/:type',
             handler: 'apihome.slugs'
         },
@@ -42,6 +47,11 @@ module.exports = {
         },
         {
             method: 'GET',
+            path: '/apiHome/months',
+            handler: 'apihome.listMonths'
+        },
+        {
+            method: 'GET',
             path: '/apiHome/tours',
             handler: 'apihome.listTour'
         },
@@ -54,6 +64,7 @@ module.exports = {
             method: 'POST',
             path: '/apiHome/lead',
             handler: 'apihome.lead'
-        }
+        },
+        
     ]
 }
